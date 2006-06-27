@@ -2471,11 +2471,10 @@ static void set_psm_initial(PatchSetMember * psm)
     if (psm->post_rev->dead)
     {
 	/* 
-	 * we expect a 'file xyz initially added on branch abc' here
-	 * but there can only be one such member in a given patchset
+	 * We expect a 'file xyz initially added on branch abc' here.
+	 * There can only be several such member in a given patchset,
+	 * since cvs only includes the file basename in the log message.
 	 */
-	if (psm->ps->branch_add)
-	    debug(DEBUG_APPMSG1, "WARNING: branch_add already set!");
 	psm->ps->branch_add = 1;
     }
 }
