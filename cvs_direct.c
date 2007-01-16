@@ -664,6 +664,7 @@ static int refill_buffer(CvsServerCtx * ctx)
 static int read_line(CvsServerCtx * ctx, char * p)
 {
     int len = 0;
+    char *pSentinel = p + BUFSIZ -2;
     while (1)
     {
 	if (ctx->head == ctx->tail)
@@ -672,7 +673,7 @@ static int read_line(CvsServerCtx * ctx, char * p)
 
 	*p = *ctx->head++;
 
-	if (*p == '\n')
+	if (*p == '\n' || p == pSentinel)
 	{
 	    *p = 0;
 	    break;
