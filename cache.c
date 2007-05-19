@@ -22,6 +22,9 @@
 
 #define CACHE_DESCR_BOUNDARY "-=-END CVSPS DESCR-=-\n"
 
+/* A place to stash the cache. */
+const char * cache_path = NULL;
+
 /* change this when making the on-disk cache-format invalid */
 static int cache_version = 1;
 
@@ -33,18 +36,20 @@ static void write_patch_set_to_cache(PatchSet *);
 static void parse_cache_revision(PatchSetMember *, const char *);
 static void dump_patch_set(FILE *, PatchSet *);
 
-static FILE *cache_open(char const *mode)
+static void set_cache_path()
 {
     char *prefix;
-    char fname[PATH_MAX];
     char root[PATH_MAX];
     char repository[PATH_MAX];
-    FILE * fp;
+
+    /* If the path was set with -c, that'll do. */
+    if (cache_path != NULL)
+	return;
 
     /* Get the prefix */
     prefix = get_cvsps_dir();
     if (!prefix)
-	return NULL;
+	return;
     
     /* Generate the full path */
     strcpy(root, root_path);
@@ -53,15 +58,24 @@ static FILE *cache_open(char const *mode)
     strrep(root, '/', '#');
     strrep(repository, '/', '#');
 
-    snprintf(fname, PATH_MAX, "%s/%s#%s", prefix, root, repository);
-    
-    if (!(fp = fopen(fname, mode)) && *mode == 'r')
+    cache_path = malloc(PATH_MAX);
+
+    snprintf(cache_path, PATH_MAX, "%s/%s#%s", prefix, root, repository);
+}
+
+static FILE *cache_open(char const *mode)
+{
+    FILE * fp;
+
+    set_cache_path();
+
+    if (!(fp = fopen(cache_path, mode)) && *mode == 'r')
     {
 	if ((fp = fopen("CVS/cvsps.cache", mode)))
 	{
 	    fprintf(stderr, "\n");
 	    fprintf(stderr, "****WARNING**** Obsolete CVS/cvsps.cache file found.\n");
-	    fprintf(stderr, "                New file will be re-written in ~/%s/\n", CVSPS_PREFIX);
+	    fprintf(stderr, "                New file will be re-written in %s\n", cache_path);
 	    fprintf(stderr, "                Old file will be ignored.\n");
 	    fprintf(stderr, "                Please manually remove the old file.\n");
 	    fprintf(stderr, "                Continuing in 5 seconds.\n");

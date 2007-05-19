@@ -8,5 +8,6 @@
 
 extern time_t read_cache();
 extern void write_cache(time_t);
+extern const char * cache_path;
 
 #endif /* CACHE_H */

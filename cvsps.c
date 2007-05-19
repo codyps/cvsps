@@ -583,7 +583,7 @@ static int usage(const char * str1, const char * str2)
     if (str1)
 	debug(DEBUG_APPERROR, "\nbad usage: %s %s\n", str1, str2);
 
-    debug(DEBUG_APPERROR, "Usage: cvsps [-h] [-x] [-u] [-z <fuzz>] [-g] [-s <range>[,<range>]]  ");
+    debug(DEBUG_APPERROR, "Usage: cvsps [-h] [-x] [-u] [-c <file>] [-z <fuzz>] [-g] [-s <range>[,<range>]]  ");
     debug(DEBUG_APPERROR, "             [-a <author>] [-f <file>] [-d <date1> [-d <date2>]] ");
     debug(DEBUG_APPERROR, "             [-b <branch>]  [-l <regex>] [-r <tag> [-r <tag>]] ");
     debug(DEBUG_APPERROR, "             [-p <directory>] [-v] [-t] [--norc] [--summary-first]");
@@ -596,6 +596,7 @@ static int usage(const char * str1, const char * str2)
     debug(DEBUG_APPERROR, "  -h display this informative message");
     debug(DEBUG_APPERROR, "  -x ignore (and rebuild) cvsps.cache file");
     debug(DEBUG_APPERROR, "  -u update cvsps.cache file");
+    debug(DEBUG_APPERROR, "  -c <file> store cvsps.cache in given file");
     debug(DEBUG_APPERROR, "  -z <fuzz> set the timestamp fuzz factor for identifying patch sets");
     debug(DEBUG_APPERROR, "  -g generate diffs of the selected patch sets");
     debug(DEBUG_APPERROR, "  -s <patch set>[-[<patch set>]][,<patch set>...] restrict patch sets by id");
@@ -769,6 +770,15 @@ static int parse_args(int argc, char *argv[])
 	    ignore_cache = 1;
 	    update_cache = 1;
 	    i++;
+	    continue;
+	}
+
+	if (strcmp(argv[i], "-c") == 0)
+	{
+	    if (++i >= argc)
+		return usage("argument to -c missing", "");
+
+	    cache_path = argv[i++];
 	    continue;
 	}
 
