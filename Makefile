@@ -32,8 +32,11 @@ install:
 	install cvsps $(prefix)/bin
 	install -m 644 cvsps.1 $(prefix)/share/man/man1
 
+tags: *.c *.h cbtcommon/*.c cbtcommon/*.h
+	ctags *.c *.h cbtcommon/*.c cbtcommon/*.h
+
 clean:
-	rm -f cvsps *.o cbtcommon/*.o core
+	rm -f cvsps *.o cbtcommon/*.o core tags
 
 .PHONY: install clean
 # DO NOT DELETE
