@@ -1,0 +1,12 @@
+---------------------
+PatchSet 1 
+Date: DATESTAMP
+Author: AUTHOR
+Branch: HEAD
+Tag: tag2 
+Log:
+Initial file
+
+Members: 
+	tag-testing:INITIAL->1.1 
+

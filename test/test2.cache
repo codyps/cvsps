@@ -1,0 +1,23 @@
+cache version: 1
+cache date: DATESTAMP
+file: tag-testing
+
+tag1: 1.1
+tag2: 1.1
+
+1.1 HEAD
+
+
+patchset: 1
+date: DATESTAMP
+author: AUTHOR
+tag: tag2
+tag_flags: 0
+branch: HEAD
+branch_add: 0
+descr:
+Initial file
+-=-END CVSPS DESCR-=-
+members:
+file:tag-testing; pre_rev:INITIAL; post_rev:1.1; dead:0; branch_point:0
+
