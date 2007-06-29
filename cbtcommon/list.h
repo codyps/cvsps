@@ -23,6 +23,7 @@
  */
 
 #include "inline.h"
+#include <stddef.h>
 
 struct list_head {
         struct list_head *next, *prev;
@@ -107,6 +108,6 @@ static INLINE void list_splice(struct list_head *list, struct list_head *head)
 }
 
 #define list_entry(ptr, type, member) \
-        ((type *)((char *)(ptr)-(unsigned long)(&((type *)0)->member)))
+   ((type *)((char *)(ptr)-offsetof(type, member)))
 
 #endif /* _COMMON_LIST_H */
