@@ -1145,6 +1145,14 @@ static CvsFile * parse_rcs_file(const char * buff)
 	    }
 	}
 
+	/* Windows CVS server may use two path separators: / for files
+	 * and \ for subdirectories. */
+	if (strncmp(fn, strip_path, strip_path_len-1) == 0 &&
+	    (fn[strip_path_len-1] == '\\' ||
+	     fn[strip_path_len-1] == '/')) {
+		goto ok;
+	}
+
 	/* FIXME: a subdirectory may have a different Repository path
 	 * than it's parent.  we'll fail the above test since strip_path
 	 * is global for the entire checked out tree (recursively).
