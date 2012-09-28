@@ -1,5 +1,5 @@
 MAJOR=2
-MINOR=1
+MINOR=2b1
 CC?=gcc
 CFLAGS?=-g -O2 -Wall
 CPPFLAGS?=-I. -DVERSION=\"$(MAJOR).$(MINOR)\"
@@ -18,7 +18,7 @@ OBJS=\
 	cvs_direct.o\
 	list_sort.o
 
-all: cvsps
+all: cvsps 
 
 deps:
 	makedepend -Y -I. *.c cbtcommon/*.c
