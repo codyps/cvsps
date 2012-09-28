@@ -325,11 +325,9 @@ static CvsServerCtx * open_ctx_forked(CvsServerCtx * ctx, const char * p_root)
 
 	close(to_cvs[1]);
 	close(from_cvs[0]);
-	
-	close(0);
-	dup(to_cvs[0]);
-	close(1);
-	dup(from_cvs[1]);
+
+	dup2(to_cvs[0], 0);
+	dup2(from_cvs[1], 1);
 
 	execv("/bin/sh",argp);
 
